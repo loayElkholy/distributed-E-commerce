@@ -23,4 +23,3 @@
   ### - for database:
 	1-Install mongodb 
 	2-run commands in db.config file 
-ver 
