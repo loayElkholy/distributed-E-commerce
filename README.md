@@ -22,4 +22,4 @@
 		python manage.py runserver 
   ### - for database:
 	1-Install mongodb 
-	2-run commands in db.config file 
+	2-run commands in command.txt file 
