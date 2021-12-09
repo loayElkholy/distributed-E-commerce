@@ -1,0 +1,104 @@
+{% extends "Marketplace/layout.html" %}
+
+{% block title %} {{product.name.capitalize}} {% endblock %}
+
+{% block body %}
+<div class="b" style="margin:auto; max-width:50%">
+    <br>
+    <h1>{{product.name.capitalize}}</h1>
+    <br>
+    <div class="card text-center">
+        <div class="card-body">
+            <img src="/Marketplace{{product.image.url}}" class="card-img-top" style="width:300px" alt="product pic">
+            <br><br>
+
+            <div class="row">
+                <h2 class="card-title">Price is {{product.price}}  {{request.session.currency.currencyName}}</h2>
+            </div>
+            <div class="row">
+                <h4 class="card-title">Currently {{product.stock}} in stock</h4>
+            </div>
+
+            <p> {{product.description}} </p>
+            <form action="{% url 'addtocart' product.id %}" Method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                        <input  class="form-control" style="max-width:40%;margin-left:65%; margin-right:0px" min="1" max="{{product.stock}}" type="number" name="quantity"  required="required" placeholder="Enter quantity">
+                    </div>
+                    <div class="col">
+                        <input class="btn btn-primary" style="margin-right:65%;" type="submit" value="Add to cart">
+                    </div>
+                </div>
+                <br>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            <p>Sold by: {{product.seller}}</p>
+        </div>
+    </div>
+    <br><br><br>
+
+
+    <h1>Ratings:</h1>
+    {% if reviews %}
+    {% for review in reviews %}
+    <br>
+    <div class="card border-dark mb-3">
+        <div class="card-body">
+            <p class="card-text">{{review.customer}} gave {{product.name}} a rating of {{review.review}} out of five stars.</p>
+        </div>
+    </div>
+    {% endfor %}
+    <form action="{% url 'addreview' product.id %}" Method="post">
+        {% csrf_token %}
+        <br>
+        <h3>What do you think?</h3>
+        <div class="row">
+            <div class="col">
+                <input class="form-control" type="number" required="required" name="review" min="0" max="5" style="max-width:40%;margin-left:65%; margin-right:0px" placeholder="Your rating:">
+            </div>
+            <div class="col">
+                <input class="btn btn-primary" style="margin-right:65%;" type="submit" value="Submit Rating">
+            </div>
+        </div>
+    </form>
+    <br><br><br><br>
+    {% else %}
+        <form action="{% url 'addreview' product.id %}" Method="post">
+            {% csrf_token %}
+            <h3>No ratings, add yours:</h3>
+            <div class="row">
+                <div class="col">
+                    <input class="form-control" type="number" name="review" min="0" max="5" style="max-width:40%;margin-left:65%; margin-right:0px" placeholder="Your rating:">
+                </div>
+                <div class="col">
+                    <input class="btn btn-primary" style="margin-right:65%;" type="submit" value="Submit Rating">
+                </div>
+            </div>
+        </form>
+        <br><br><br>
+    {% endif %}
+
+    <h1>Similar products:</h1>
+    {% for product in similar_products %}
+        <br>
+        <div class="card text-center">
+            <div class="card-body">
+                <a href="{% url 'product' product.id %}">
+                    <img src="/Marketplace{{product.image.url}}" class="card-img-top" style="width:300px" alt="product pic">
+                </a>
+                <br>
+                <a href="{% url 'product' product.id %}" >{{product.id}}.{{product.name.capitalize}}</a>
+                <br>
+                <h5 class="card-title">Price is {{product.price}} L.E.</h5>
+                <p> {{product.description}} </p>
+            </div>
+            <div class="card-footer text-muted">
+                <p>Sold by: {{product.seller}}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

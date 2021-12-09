@@ -1,0 +1,228 @@
+{% extends "Marketplace/layout.html" %}
+
+{% block title %} Cart {% endblock %}
+
+{% block body %}
+
+{% if cart %}
+<div class ="container-fluid" style="padding:100px ; background-color:#f1f1f1 ;margin-left:0px  ;margin-right:0px; width: 100%;">
+    <h1>Cart</h1>
+    <div class="row">
+    {% for order in cart %}
+        <div class="col-lg-4 col-md-4 col-sm-6"  style="padding-top:100px;  ">
+            <div class="card text-center " style="width:100%;   margin:auto ; border:0px; ">
+                <div class="card-body">
+                    <a href="{% url 'product' order.0.id %}" >
+                    <img src="/Marketplace{{order.0.image.url}}" class="card-img-top" style="width:auto; padding-top:50px ; ;max-width: 300px;;height :350px" alt="product pic">
+                </a>
+                    <h3 class="card-title">Price is {{order.0.price}}  {{request.session.currency.currencyName}}</h3>
+                    <div class="row">
+                        <h4 class="card-title">Currently {{order.0.stock}} in stock</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                          <form action="{% url 'changequantity' order.0.id %}" Method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col">
+                                    <input  class="form-control" style="max-width:40%;margin-left:65%; margin-right:0px" min="0" max="{{order.0.stock}}" type="number" name="quantity"  required="required" placeholder={{order.1}}>
+                                </div>
+                                <div class="col">
+                                    <input class="btn btn-primary" style="margin-right:65%;" type="submit" value="change quantity">
+                                </div>
+                            </div>
+                            <br>
+                        </form>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    Sold by: {{order.0.seller}}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <br><br>
+    <div class="alert alert-primary" role="alert" style="font-size: 30px">
+      Total price is {{total}} {{request.session.currency.currencyName}}
+    </div>
+  
+</div>
+
+<div style="padding:0% 10%">
+      <!-- Heading -->
+      <h2 class="my-5 h2 text-center" style="color:black">Checkout form</h2>
+
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div>
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card content-->
+            <form action="{% url 'cart' %}" Method="post" class="card-body">
+              {% csrf_token %}
+              <!--Grid row-->
+              <div class="row">
+
+                <!--Grid column-->
+                <div class="col-md-6 mb-2">
+
+                  <!--firstName-->
+                  <div class="md-form ">
+                    <input type="text" id="firstName" class="form-control">
+                    <label for="firstName" class="">First name</label>
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-md-6 mb-2">
+
+                  <!--lastName-->
+                  <div class="md-form">
+                    <input type="text" id="lastName" class="form-control">
+                    <label for="lastName" class="">Last name</label>
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+              </div>
+              <!--Grid row-->
+
+
+              <!--address-->
+              <div class="md-form mb-5">
+                <input type="text" id="address" class="form-control" placeholder="1234 Main St">
+                <label for="address" class="">Address</label>
+              </div>
+
+              <!--address-2-->
+              <div class="md-form mb-5">
+                <input type="text" id="address-2" class="form-control" placeholder="Apartment or suite">
+                <label for="address-2" class="">Address 2 (optional)</label>
+              </div>
+
+              <!--Grid row-->
+              <div class="row">
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-12 mb-4">
+
+                  <label for="country">Country</label>
+                  <select class="custom-select d-block w-100" id="country" required>
+                    <option value="">Choose...</option>
+                    <option>Egypt</option>
+                    <option>Sudan</option>
+                    <option>Libya</option>
+                    <option>KSA</option>
+                    <option>UAE</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a valid country.
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-6 mb-4">
+
+                  <label for="state">State</label>
+                  <input type="text" class="form-control" id="state" placeholder="" required>
+                  <div class="invalid-feedback">
+                    State required.
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-4 col-md-6 mb-4">
+
+                  <label for="zip">Zip</label>
+                  <input type="text" class="form-control" id="zip" placeholder="" required>
+                  <div class="invalid-feedback">
+                    Zip code required.
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+              </div>
+              <!--Grid row-->
+
+              <hr>
+
+              <h3> Payment method: </h3>
+              <div>
+                  <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                      <input id="credit" name="paymentMethod" value="Visa" type="radio" class="custom-control-input" checked required>
+                      <label class="custom-control-label" for="credit">Credit card</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                      <input id="cashondelivery" name="paymentMethod" value="Cash" type="radio" class="custom-control-input" required>
+                      <label class="custom-control-label" for="cashondelivery">Cash on delivery</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="cc-name">Name on card</label>
+                      <input type="text" class="form-control" id="cc-name" placeholder="Leave empty if COD is selected" required>
+                      <small class="text-muted">Full name as displayed on card</small>
+                      <div class="invalid-feedback">
+                        Name on card is required
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="cc-number">Credit card number</label>
+                      <input type="text" class="form-control" id="cc-number" placeholder="Leave empty if COD is selected" required>
+                      <div class="invalid-feedback">
+                        Credit card number is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="cc-expiration">Expiration</label>
+                      <input type="text" class="form-control" id="cc-expiration" placeholder="Leave empty if COD is selected" required>
+                      <div class="invalid-feedback">
+                        Expiration date required
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="cc-expiration">CVV</label>
+                      <input type="text" class="form-control" id="cc-cvv" placeholder="Leave empty if COD is selected" required>
+                      <div class="invalid-feedback">
+                        Security code required
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="mb-4">
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Confirm order</button>
+              </div>
+              <!--/.Card-->
+
+            </form>
+
+          </div>
+
+        <!--Grid column-->
+        </div >
+      <!--Grid row-->
+      </div>
+</div>
+{% else %}
+    <br><br><br>
+    <h3> Your cart is empty, Browse our <a href="{% url 'index'%}">Catalog</a> to add some products.</h3>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "Marketplace/layout.html" %}
+
+{% block title %} Profile {% endblock %}
+
+{% block body %}
+<div class="row gutters-sm" style="margin: 50px">
+    <div class="col-md-2 mb-2">
+    </div>
+    <div class="col-md-8 mb-8">
+      <div class="card" style="margin: 50px; background-color:#f1f1f1 ;">
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center text-center">
+            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+            <div class="mt-3">
+
+
+              
+              <h4>{{ user.username }}</h4>
+             
+
+              
+            </div>
+              <div class="row" style="margin: 10px">
+                
+                <div class="col">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                
+                <div class="col text-secondary">
+                  {{ seller.email }}
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col">
+                  <h6 class="mb-0">Money</h6>
+                </div>
+                
+                <div class="col text-secondary">
+                  {{seller.money}}$
+                </div>
+                
+              </div>
+
+              <form action="{% url 'my_profile'    %}" Method="post" >
+                {% csrf_token %}
+                <h4 style="margin: 20px"> Deposit more money : </h4>
+              <div  >
+                <label for="cc-name">Credit card number </label>
+                <input type="text" class="form-control" id="cc-name" placeholder="Write your Credit card number" required>
+                <label for="cc-name">Amount of money</label>
+                <input type="text" class="form-control" name="money" placeholder="Write amount of money " required>
+              </div>
+              <div>
+              <input class="btn btn-primary" style="margin:10px" type="submit" value="Add Money">
+              </div>
+            </form>
+
+              
+             
+              
+
+
+
+          </div>
+        </div>
+     </div>
+    </div>
+</div>
+
+{% endblock %}

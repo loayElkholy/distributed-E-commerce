@@ -1,0 +1,85 @@
+{% extends "Marketplace/layout.html" %}
+{% block title %} Catalog {% endblock %}
+{% block body %}
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/Marketplace/media/5.PNG" class="d-block " style="width:100%;" alt="...">
+    </div>
+    <div class="carousel-item ">
+      <img src="/Marketplace/media/2.PNG" class="d-block " style="width:100%;"alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="/Marketplace/media/3.PNG"  style="width:100%; " class="d-block " alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="/Marketplace/media/4.PNG" class="d-block " style="width:100%;" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="/Marketplace/media/1.PNG" class="d-block " style="width:100%;" alt="...">
+    </div>
+    
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </a>
+</div>
+
+
+<div class ="container " style="padding:100px ;">
+    <div class="row text-center">
+        <div class="col-lg-3 col-md-4 col-sm-6" style="margin :auto">
+            <div class="card text-center " style="width:100%;  margin:auto ; border:0px; ">
+                <a href="{% url 'category' 'electronics' %}"> <img src="/Marketplace/Marketplace/images/apple-iphone-12-r1.jpg" class="card-img-top" style="width:auto ; max-height: 200px; ;height :100%" alt="product pic"></a>
+               <div class="card-body">
+                  <h5 class="card-title">Electronics</h5>
+               </div>
+              </div>
+            </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6" style="margin :auto">
+      <div class="card text-center " style="width:100%;  margin:auto ; border:0px; ">
+      <a href="{% url 'category' 'cloth' %}" > <img src="/Marketplace/Marketplace/images/jacket.jpg" class="card-img-top" style="width:auto ; max-height: 200px; ;height :100%" alt="product pic"></a>
+      <div class="card-body">
+          <h5 class="card-title">Clothes</h5>
+      </div>
+  </div>
+</div>
+
+  <div class="col-lg-4 col-md-4 col-sm-12" style="margin :auto">
+    <div class="card text-center " style="width:100%;  margin:auto ; border:0px; ">
+    <a href="{% url 'category' 'sport' %}" > <img src="/Marketplace/Marketplace/images/download.jfif" class="card-img-top" style="width:auto ; max-height: 200px; ;height :100%" alt="product pic"></a>
+    <div class="card-body">
+        <h5 class="card-title">Sports</h5>
+    </div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+
+<div class ="container-fluid" style="padding:100px ; background-color:#f1f1f1 ;margin-left:0px  ;margin-right:0px; width: 100%;">
+    <h1>{{message}}</h1>
+    <div class="row" >
+    {% for product in products %}
+        <div class="col-lg-4 col-md-4 col-sm-6"  style="padding-top:100px;  ">
+            <div class="card text-center " style="width:100%;   margin:auto ; border:0px;  ">
+                <a href="{% url 'product' product.id %}" > <img src="/Marketplace{{product.image.url}}" class="card-img-top" style="width:auto; padding-top:50px ; ;max-width: 300px;;height :350px" alt="product pic"></a>
+                <div class="card-body">
+                    <a href="{% url 'product' product.id %}">{{product.name.capitalize}}</a>
+                    <h5 class="card-title">Price is {{product.price}}  {{request.session.currency.currencyName}}</h5>
+                </div>
+                <div class="card-footer text-muted"> Sold by: {{product.seller}} </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "Marketplace/layout.html" %}
+{% block title %} Dashboard {% endblock %}
+{% block body %}
+    <div class ="container-fluid" style="padding:100px ; background-color:#f1f1f1 ;margin-left:0px  ;margin-right:0px; width: 100%;">
+        {% if products %}
+            <div class="row" >
+                {% for product in products %}
+                    <div class="col-lg-4 col-md-4 col-sm-6"  style="padding-top:100px;  ">
+                    <div class="card text-center " style="width:100%;   margin:auto ; border:0px;  ">
+                        <a href="{% url 'product' product.id %}" > <img src="/Marketplace{{product.image.url}}" class="card-img-top" style="width:auto; padding-top:50px ; ;max-width: 300px;;height :350px" alt="product pic"></a>
+                        <div class="card-body">
+                            <a href="{% url 'product' product.id %}">{{product.name.capitalize}}</a>
+                            <h5 class="card-title">Price is {{product.price}} {{request.session.currency.currencyName}}</h5>
+                            <h6> Currently {{product.stock}} in stock</h6>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3>You currently don't have any products on sale</h3>
+            <h3>Add some below.</h3>
+            <br><br>
+        {% endif %}
+
+        <!-- fields name, description, category, stock, price, image are provided in this order -->
+
+        <div class="container tm-mt-big tm-mb-big" style="padding: 0 15%">
+          <div class="row">
+            <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+              <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                  <div class="row">
+                    <div class="col-12">
+                      <h2 class="tm-block-title d-inline-block">Add Product</h2>
+                    </div>
+                  </div>
+                  <form action="{% url 'dashboard' %}" method="post" class="tm-edit-product-form" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    <div class="row tm-edit-product-row">
+                      <div class="form-group mb-3">
+                        <input id="name" name="name" type="text" class="form-control validate" placeholder="Product Name" required="">
+                      </div>
+                      <div class="form-group mb-3">
+                        <textarea class="form-control validate" rows="5" name="description" placeholder="Product Description"></textarea>
+                      </div>
+                      <br>
+                      <div class="form-group mb-3">
+                      <select class="form-control" name="category" id="category">
+                        <option selected="">Select Product category</option>
+
+                        <option value="electronics">Electronics</option>
+                        <option value="cloth">Clothes</option>
+                        <option value="sport">Sports</option>
+                      </select>
+                      </div>
+                      <div class="form-group mb-3 col-xs-12 col-sm-6">
+                        <input id="stock" name="stock" type="number" min="0" class="form-control validate" placeholder="Units In Stock" required="">
+                      </div>
+                      <div class="form-group mb-3 col-xs-12 col-sm-6">
+                        <input id="price" name="price" type="number" min="0" class="form-control validate" placeholder="Product price in USD" required="">
+                      </div>
+                    </div>
+                    <div class="custom-file mt-3 mb-3">
+                        <label class="form-label" for="customFile">Upload Product Image</label>
+                        <input type="file" name="image" class="form-control" id="customFile" placeholder="Upload product image" required>
+                        <br><br><br>
+                    </div>
+                    <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block text-uppercase">Add Product Now</button>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}
